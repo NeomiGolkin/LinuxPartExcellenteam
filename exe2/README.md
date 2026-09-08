@@ -1,10 +1,10 @@
 # MyFS - Simple Filesystem Simulator
 
-## מטרת הפרויקט
-פרויקט זה מממש מערכת קבצים פשוטה הפועלת במרחב המשתמש (Userspace) בסביבת לינוקס. המערכת מדמה את שכבות מערכת הקבצים הקלאסיות (VFS, Filesystem, Block Device) ומאפשרת ביצוע פעולות בסיסיות של ניהול קבצים דרך ממשק משתמש (CLI). התקן האחסון הפיזי מדומה באמצעות קובץ במערכת המארחת, מה שמבטיח את שמירת המידע בין הרצות שונות.
+## Project Objective
+This project implements a simple filesystem operating in userspace within a Linux environment. The system simulates classic filesystem layers (VFS, Filesystem, Block Device) and allows performing basic file management operations via a Command Line Interface (CLI). The physical storage device is simulated using a file on the host system, ensuring data persistence between executions.
 
-## איך לקמפל ולהריץ
-כדי לבנות ולהריץ את הסימולטור, פתחו מסוף (Terminal) בתיקייה הראשית של הפרויקט והריצו את הפקודות הבאות:
+## How to Compile and Run
+To build and run the simulator, open a terminal in the project's root directory and execute the following commands:
 
 ```bash
 mkdir build
