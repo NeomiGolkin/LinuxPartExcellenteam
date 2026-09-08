@@ -1,0 +1,2 @@
+# Empty dependencies file for myfs_app.
+# This may be replaced when dependencies are built.

@@ -1,0 +1,3 @@
+/mnt/c/Users/USER001/Desktop/Excellenteam/C++/exe2/fs/build/CMakeFiles/myfs_app.dir
+/mnt/c/Users/USER001/Desktop/Excellenteam/C++/exe2/fs/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/USER001/Desktop/Excellenteam/C++/exe2/fs/build/CMakeFiles/rebuild_cache.dir
