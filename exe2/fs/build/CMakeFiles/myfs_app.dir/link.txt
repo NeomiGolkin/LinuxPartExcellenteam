@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/myfs_app.dir/blkdev.cpp.o CMakeFiles/myfs_app.dir/myfs.cpp.o CMakeFiles/myfs_app.dir/myfs_main.cpp.o CMakeFiles/myfs_app.dir/vfs.cpp.o -o myfs_app 
