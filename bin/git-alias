@@ -1,24 +1,96 @@
 #!/usr/bin/env bash
 
 options=""
+remove_mode=""
+remove_all_mode=""
 
 usage() {
 cat <<HERE
-usage: git alias [options]                          # list all aliases
-   or: git alias [options] <search-pattern>         # show aliases matching pattern
-   or: git alias [options] <alias-name> <command>   # alias a command
+usage: git alias [options]                         # list all aliases
+    or: git alias [options] <search-pattern>         # show aliases matching pattern
+    or: git alias [options] <alias-name> <command>   # alias a command
+    or: git alias [options] --remove <alias-name>    # remove an alias
+    or: git alias [options] --remove-all            # remove all aliases
 options:
 
-    --global  Show or create alias in the system config
-    --local   Show or create alias in the repository config
+    --global       Show, create or remove alias in the system config
+    --local        Show, create or remove alias in the repository config
+    -r, --remove   Remove a single alias by name
+    --remove-all   Remove all aliases in the current config scope
+    --clear        Alias for --remove-all
 HERE
 }
 
-if [[ "$1" == "--local" || "$1" == "--global" ]]; then
-    options=$1
-    shift
+# Parse options
+while [[ "$1" == --* || "$1" == -* ]]; do
+    case "$1" in
+        --local|--global)
+            options="$1"
+            shift
+            ;;
+        --remove|-r)
+            remove_mode=1
+            shift
+            ;;
+        --remove-all|--clear)
+            remove_all_mode=1
+            shift
+            ;;
+        --help|-h)
+            usage
+            exit 0
+            ;;
+        *)
+            >&2 echo "error: unknown option $1"
+            usage
+            exit 1
+            ;;
+    esac
+done
+
+# Handle remove-all mode
+if [[ -n "$remove_all_mode" ]]; then
+    # Iterate over existing aliases in the given scope and unset them one by one
+    if [[ -z "$options" ]]; then
+        aliases=$(git config --get-regexp 'alias\..*' | sed 's/^alias\.//' | cut -d' ' -f1)
+        for alias_name in $aliases; do
+            git config --unset "alias.$alias_name"
+        done
+    else
+        aliases=$(git config "$options" --get-regexp 'alias\..*' | sed 's/^alias\.//' | cut -d' ' -f1)
+        for alias_name in $aliases; do
+            git config "$options" --unset "alias.$alias_name"
+        done
+    fi
+    exit 0
 fi
 
+# Handle remove single alias mode
+if [[ -n "$remove_mode" ]]; then
+    if [[ $# -ne 1 ]]; then
+        >&2 echo "error: --remove requires an alias name."
+        exit 1
+    fi
+    alias_name="$1"
+    
+    # Check if the alias exists in the target scope/global
+    if [[ -z "$options" ]]; then
+        if ! git config "alias.$alias_name" >/dev/null 2>&1; then
+            >&2 echo "error: alias '$alias_name' does not exist."
+            exit 1
+        fi
+        git config --unset "alias.$alias_name"
+    else
+        if ! git config "$options" "alias.$alias_name" >/dev/null 2>&1; then
+            >&2 echo "error: alias '$alias_name' does not exist."
+            exit 1
+        fi
+        git config "$options" --unset "alias.$alias_name"
+    fi
+    exit 0
+fi
+
+# Standard listing, searching, or adding behavior
 case $# in
   0)
       if [[ -z "$options" ]]; then

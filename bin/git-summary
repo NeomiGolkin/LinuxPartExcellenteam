@@ -24,7 +24,8 @@ for arg in "$@"; do
             ;;
         --output-style)
             OUTPUT_STYLE="$2"
-            shift
+            # Bug fix: Removed redundant shift inside --output-style to prevent 
+# double-shifting, which caused subsequent arguments to be incorrectly skipped.
             ;;
         -*)
             >&2 echo "unknown argument $arg found"

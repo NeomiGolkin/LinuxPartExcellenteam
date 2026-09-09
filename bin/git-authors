@@ -18,7 +18,10 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [ $LIST != true ]; then
+# Bug fix: LIST was uninitialized when the script ran without -l/--list,
+# causing the test expression to evaluate as [ != true ] and throw a syntax error.
+# Quoting "$LIST" (or initializing LIST=false) resolves this issue safely.
+if [ "$LIST" != true ]; then
   FILE=$1
   if [ -z "$FILE" ]; then
     FILE=$(find . -mindepth 1 -maxdepth 1 \( -iname '*authors*' -o -iname '*contributors*' \) | head -n1)

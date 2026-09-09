@@ -30,6 +30,7 @@ git-extras(1) -- Awesome GIT utilities
    - **git-abort(1)** Abort current git operation
    - **git-alias(1)** Define, search and show aliases
    - **git-archive-file(1)** Export the current HEAD of the git repository to an archive
+   - **git-recent-committers(1)** List people who made commits in the last N days
    - **git-authors(1)** Generate authors report
    - **git-browse-ci(1)** <View the web page for the current repository>
    - **git-browse(1)** <View the web page for the current repository>

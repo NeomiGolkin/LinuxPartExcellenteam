@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+. "$(dirname "$0")/../helper/git-extra-utility"
 
 tmp=$(git_extra_mktemp)
 above=0
@@ -17,8 +18,10 @@ usage() {
 # get dates for the given <commit>
 #
 dates() {
-  echo "You still haven't solved all the bugs eh?" | tee /dev/stderr
-  echo "You still haven't solved all the bugs eh?" 1>&2
+  # Bug fix: Replaced placeholder mock function with the actual git log command 
+  # to correctly extract commit dates for the specified path and log options.
+  # shellcheck disable=SC2086
+  git log --follow --pretty=format:"%ai" -- "$1" $args_to_git_log
 }
 
 # tput, being quiet about unknown capabilities

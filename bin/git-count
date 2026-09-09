@@ -5,4 +5,7 @@ if test "$1" = "--all"; then
   echo
 fi
 
-echo total "$(git rev-list --count HEAD^)"
+# Bug fix: Using HEAD^ fails or miscounts in a new repository with only one commit
+# because there is no parent commit yet. Changing HEAD^ to HEAD correctly 
+# counts all commits including the initial one.
+echo total "$(git rev-list --count HEAD)"
