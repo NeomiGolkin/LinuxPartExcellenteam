@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if test "$1" = "--all"; then
+  git shortlog -n -s | awk '{print substr($0,index($0,$2)) " (" $1 ")"}'
+  echo
+fi
+
+# Bug fix: Using HEAD^ fails or miscounts in a new repository with only one commit
+# because there is no parent commit yet. Changing HEAD^ to HEAD correctly 
+# counts all commits including the initial one.
+echo total "$(git rev-list --count HEAD)"

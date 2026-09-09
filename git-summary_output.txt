@@ -1,0 +1,11 @@
+
+ project     : C++
+ repo age    : 16 minutes 
+ branch:     : exe2
+ last active : 5 minutes ago
+ active on   : 1 days
+ commits     : 2
+ files       : 370
+ uncommitted : 1
+ authors     : 
+     2	NeomiGolkin  100.0%

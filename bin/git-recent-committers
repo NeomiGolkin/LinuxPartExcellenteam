@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# Load helper utilities if needed
+if [ -f "$(dirname "$0")/../helper/is-git-repo" ]; then
+    . "$(dirname "$0")/../helper/is-git-repo"
+fi
+
+# 1. Check if we are inside a Git repository
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "error: git-recent-committers must be run inside a Git repository" >&2
+    exit 1
+fi
+
+# 2. Environment variable fallback or default value (e.g., last 30 days or from env)
+days="${GIT_RECENT_COMMITTERS_DAYS:-30}"
+
+# Parse command line options (e.g., -n <days>)
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -n)
+            shift
+            days="$1"
+            ;;
+        *)
+            echo "error: unknown argument $1" >&2
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+# 3. Validate that days is a positive integer
+if ! [[ "$days" =~ ^[0-9]+$ ]] || [ "$days" -le 0 ]; then
+    echo "error: number of days must be a positive integer" >&2
+    exit 1
+fi
+
+# 4. Iterating over collection: Get recent committers using git shortlog and process with a loop
+git shortlog -sne --since="${days}.days.ago" | while read -r count name email; do
+    # Skip empty lines if any
+    [ -z "$name" ] && continue
+    echo "$count  $name $email"
+done
